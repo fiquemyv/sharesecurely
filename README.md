@@ -1,6 +1,6 @@
 # **ShareSecurely**
 
-A secure file-sharing platform.
+A web application designed for the safe transmission, storage, and management of highly confidential files. Built with a security-first backend, the platform ensures data privacy, access control, and absolute integrity for sensitive information.
 
 **Live App:** [www.sharesecurely.net](https://www.sharesecurely.net)
 
