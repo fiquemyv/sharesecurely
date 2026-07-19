@@ -13,3 +13,7 @@ A web application designed for the safe transmission, storage, and management of
 1. Activate virtual environment  
 2. Run: pip install \-r requirements.txt  
 3. Run: python run.py
+
+## **License**
+
+This project is open source under the [MIT License](LICENSE).
