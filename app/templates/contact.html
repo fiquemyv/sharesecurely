@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block pageClass %}page-contact{% endblock %}
+{% block title %}Contact — ShareSecurely{% endblock %}
+
+{% block content %}
+        <h1>Contact</h1>
+        <p>Have a question or want to get involved? Send a message.</p>
+
+        <form action="#" method="POST">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Your name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="message" style="padding-top: 0.6rem;">Message</label>
+                <textarea id="message" name="message" placeholder="What would you like to say?" required></textarea>
+            </div>
+
+            <div class="form-submit">
+                <button type="submit">Send Message</button>
+            </div>
+        </form>
+
+        <a href="/" class="back-link">&larr; Back home</a>
+{% endblock %}

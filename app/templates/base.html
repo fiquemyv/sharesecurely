@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ShareSecurely{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='icon.png') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { corePlugins: { preflight: false } }
+    </script>
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <main class="{% block pageClass %}{% endblock %}">
+        {% block header %}
+        <nav>
+            <a href="/"><img src="{{ url_for('static', filename='logo.png') }}" alt="ShareSecurely" class="navbar-logo"></a>
+            <a href="/waitlist" class="nav-cta">JOIN WAITLIST &rarr;</a>
+        </nav>
+        {% endblock %}
+
+        {% block content %}{% endblock %}
+
+        <footer>
+            <span>&copy; 2026 ShareSecurely</span>
+            <span>
+                <a href="/terms">Terms of Service</a>
+                &nbsp;&middot;&nbsp;
+                <a href="/privacy">Privacy Policy</a>
+            </span>
+        </footer>
+    </main>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

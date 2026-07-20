@@ -1,0 +1,399 @@
+/* === Shared (base.html) === */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #fafafa;
+    color: #1a1a1a;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1rem, 3vw, 2rem);
+}
+
+main {
+    max-width: clamp(320px, 90vw, 640px);
+    width: 100%;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+}
+
+.navbar-logo {
+    display: block;
+    height: 48px;
+    width: auto;
+}
+
+.nav-cta {
+    font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #2563eb;
+    text-decoration: none;
+    border-bottom: 2px solid #2563eb;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.nav-cta:hover {
+    color: #1d4ed8;
+    border-bottom-width: 3px;
+    letter-spacing: 0.02em;
+}
+
+footer {
+    margin-top: 3rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #e5e7eb;
+    font-size: clamp(0.7rem, 1.4vw, 0.8rem);
+    color: #9ca3af;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+footer a {
+    color: #6b7280;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: #2563eb;
+}
+
+/* === Default generic elements (used by terms, privacy, contact, waitlist) === */
+
+h1 {
+    font-size: clamp(1.25rem, 4vw, 1.75rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.75rem;
+}
+
+h2 {
+    font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+}
+
+p {
+    color: #6b7280;
+    font-size: clamp(0.85rem, 2vw, 0.95rem);
+    line-height: 1.65;
+    margin-bottom: 1.5rem;
+}
+
+.back-link {
+    font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+    color: #6b7280;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+}
+
+.back-link:hover {
+    color: #2563eb;
+}
+
+/* === Index page === */
+
+.page-index .tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #2563eb;
+    background: #dbeafe;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    margin-bottom: 1.5rem;
+}
+
+.page-index .subtitle {
+    font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+    color: #4b5563;
+    margin-bottom: 2rem;
+    max-width: 480px;
+    line-height: 1.55;
+}
+
+.page-index .feature-list {
+    list-style: none;
+    margin-bottom: 2.5rem;
+    display: grid;
+    gap: 0.15rem;
+}
+
+.page-index .feature-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: clamp(0.85rem, 1.8vw, 0.95rem);
+    color: #374151;
+    letter-spacing: 0.01em;
+}
+
+.page-index .feature-list li::before {
+    content: "+";
+    font-weight: 700;
+    color: #2563eb;
+    flex-shrink: 0;
+}
+
+.page-index .status {
+    font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+    color: #6b7280;
+    border-left: 3px solid #d1d5db;
+    padding-left: 1rem;
+    margin-bottom: 2rem;
+    letter-spacing: 0.02em;
+}
+
+.page-index .links {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.page-index .links a {
+    color: #2563eb;
+    text-decoration: none;
+    font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.page-index .links a:hover {
+    border-bottom-color: #2563eb;
+}
+
+/* === Contributors page === */
+
+.page-contributors h1 {
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+}
+
+.page-contributors .subtitle {
+    color: #6b7280;
+    margin-bottom: 2rem;
+    font-size: clamp(0.85rem, 1.8vw, 0.95rem);
+    letter-spacing: 0.01em;
+}
+
+.page-contributors .contributor-list {
+    list-style: none;
+    margin-bottom: 2.5rem;
+}
+
+.page-contributors .contributor-list li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.page-contributors .contributor-list li:first-child {
+    border-top: 1px solid #e5e7eb;
+}
+
+.page-contributors .contributor-list img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.page-contributors .contributor-list .name {
+    font-weight: 600;
+    font-size: clamp(0.85rem, 1.8vw, 0.95rem);
+    letter-spacing: 0.01em;
+}
+
+.page-contributors .contributor-list .placeholder {
+    background: #e5e7eb;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: #9ca3af;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.page-contributors .cta {
+    display: inline-block;
+    font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: #2563eb;
+    text-decoration: none;
+    border: 1px solid #2563eb;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    transition: background 0.2s, color 0.2s;
+}
+
+.page-contributors .cta:hover {
+    background: #2563eb;
+    color: #fff;
+}
+
+.page-contributors .back-link {
+    display: block;
+    margin-top: 1.5rem;
+}
+
+/* === Terms & Privacy pages === */
+
+.page-content h2 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+}
+
+.page-content p {
+    color: #4b5563;
+    margin-bottom: 0.75rem;
+    font-size: clamp(0.8rem, 1.7vw, 0.9rem);
+    line-height: 1.65;
+    letter-spacing: 0.01em;
+}
+
+.page-content .effective-date {
+    font-size: clamp(0.7rem, 1.4vw, 0.8rem);
+    color: #9ca3af;
+    margin-bottom: 2rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.page-content .back-link {
+    display: inline-block;
+    margin-top: 2rem;
+}
+
+/* === Contact & Waitlist shared form styles === */
+
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.page-contact .form-group {
+    align-items: flex-start;
+}
+
+label {
+    font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #374151;
+    flex: 0 0 120px;
+    min-width: 120px;
+}
+
+select, input, textarea {
+    flex: 1;
+    padding: 0.6rem 0.75rem;
+    font-size: clamp(0.8rem, 1.7vw, 0.9rem);
+    font-family: inherit;
+    color: #1a1a1a;
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+select:focus, input:focus, textarea:focus {
+    border-color: #2563eb;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-row {
+    display: flex;
+    gap: 0;
+}
+
+.country-code {
+    font-size: 0.85rem;
+    color: #6b7280;
+    background: #f3f4f6;
+    border-right: 0;
+    border-radius: 6px 0 0 6px;
+    text-align: center;
+    flex: 0 0 80px;
+    width: 80px;
+    min-width: 80px;
+    cursor: default;
+}
+
+.phone-input {
+    border-radius: 0 6px 6px 0;
+    flex: 1;
+}
+
+.form-submit {
+    margin-left: calc(120px + 0.75rem);
+}
+
+button {
+    font-size: clamp(0.8rem, 1.7vw, 0.9rem);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: #fff;
+    background: #2563eb;
+    border: none;
+    padding: 0.6rem 1.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 0.5rem;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+.note {
+    margin-top: 1rem;
+    font-size: clamp(0.7rem, 1.4vw, 0.8rem);
+    color: #9ca3af;
+    letter-spacing: 0.02em;
+}
+
+/* === Waitlist-specific === */
+
+.page-waitlist .form-group {
+    align-items: center;
+}

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block pageClass %}page-waitlist{% endblock %}
+{% block title %}Join Waitlist — ShareSecurely{% endblock %}
+
+{% block content %}
+        <h1>Join the Waitlist</h1>
+        <p>Be the first to know when ShareSecurely launches. Early supporters get priority access.</p>
+
+        <form action="#" method="POST">
+            <div class="form-group">
+                <label for="name">Full name</label>
+                <input type="text" id="name" name="name" placeholder="Your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="country">Country</label>
+                <input type="text" id="country" name="country" list="country-list" placeholder="Search for your country..." autocomplete="off" required>
+                <datalist id="country-list">
+                    <option value="Afghanistan" data-code="+93">
+                    <option value="Albania" data-code="+355">
+                    <option value="Algeria" data-code="+213">
+                    <option value="Argentina" data-code="+54">
+                    <option value="Australia" data-code="+61">
+                    <option value="Austria" data-code="+43">
+                    <option value="Bangladesh" data-code="+880">
+                    <option value="Belgium" data-code="+32">
+                    <option value="Brazil" data-code="+55">
+                    <option value="Canada" data-code="+1">
+                    <option value="Chile" data-code="+56">
+                    <option value="China" data-code="+86">
+                    <option value="Colombia" data-code="+57">
+                    <option value="Denmark" data-code="+45">
+                    <option value="Egypt" data-code="+20">
+                    <option value="Ethiopia" data-code="+251">
+                    <option value="Finland" data-code="+358">
+                    <option value="France" data-code="+33">
+                    <option value="Germany" data-code="+49">
+                    <option value="Ghana" data-code="+233">
+                    <option value="Greece" data-code="+30">
+                    <option value="India" data-code="+91">
+                    <option value="Indonesia" data-code="+62">
+                    <option value="Iran" data-code="+98">
+                    <option value="Iraq" data-code="+964">
+                    <option value="Ireland" data-code="+353">
+                    <option value="Israel" data-code="+972">
+                    <option value="Italy" data-code="+39">
+                    <option value="Japan" data-code="+81">
+                    <option value="Jordan" data-code="+962">
+                    <option value="Kenya" data-code="+254">
+                    <option value="Malaysia" data-code="+60">
+                    <option value="Mexico" data-code="+52">
+                    <option value="Morocco" data-code="+212">
+                    <option value="Nepal" data-code="+977">
+                    <option value="Netherlands" data-code="+31">
+                    <option value="New Zealand" data-code="+64">
+                    <option value="Nigeria" data-code="+234">
+                    <option value="Norway" data-code="+47">
+                    <option value="Pakistan" data-code="+92">
+                    <option value="Peru" data-code="+51">
+                    <option value="Philippines" data-code="+63">
+                    <option value="Poland" data-code="+48">
+                    <option value="Portugal" data-code="+351">
+                    <option value="Romania" data-code="+40">
+                    <option value="Russia" data-code="+7">
+                    <option value="Saudi Arabia" data-code="+966">
+                    <option value="Singapore" data-code="+65">
+                    <option value="South Africa" data-code="+27">
+                    <option value="South Korea" data-code="+82">
+                    <option value="Spain" data-code="+34">
+                    <option value="Sri Lanka" data-code="+94">
+                    <option value="Sweden" data-code="+46">
+                    <option value="Switzerland" data-code="+41">
+                    <option value="Tanzania" data-code="+255">
+                    <option value="Thailand" data-code="+66">
+                    <option value="Turkey" data-code="+90">
+                    <option value="Uganda" data-code="+256">
+                    <option value="Ukraine" data-code="+380">
+                    <option value="United Arab Emirates" data-code="+971">
+                    <option value="United Kingdom" data-code="+44">
+                    <option value="United States" data-code="+1">
+                    <option value="Vietnam" data-code="+84">
+                </datalist>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone number</label>
+                <div class="form-row">
+                    <input type="text" id="country-code" class="country-code" value="+1" readonly tabindex="-1">
+                    <input type="tel" id="phone" name="phone" class="phone-input" placeholder="Phone number" required>
+                </div>
+            </div>
+
+            <div class="form-submit">
+                <button type="submit">Join the Waitlist</button>
+            </div>
+        </form>
+
+        <p class="note">No spam. One email when we launch, that's it.</p>
+
+        <a href="/" class="back-link">&larr; Back home</a>
+{% endblock %}

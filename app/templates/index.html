@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block pageClass %}page-index{% endblock %}
+{% block title %}ShareSecurely — Coming Soon{% endblock %}
+
+{% block header %}
+        <nav>
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="ShareSecurely" class="navbar-logo">
+            <a href="/waitlist" class="nav-cta">JOIN WAITLIST &rarr;</a>
+        </nav>
+{% endblock %}
+
+{% block content %}
+        <p class="subtitle">
+            <strong>Coming Soon:</strong> An open-source secure file-sharing platform.
+            Share sensitive documents with controlled access, expiration policies, and full audit trails.
+        </p>
+
+        <ul class="feature-list">
+            <li>End-to-end controlled file access with expiring share links</li>
+            <li>SHA-256 integrity verification on every download</li>
+            <li>Password-protected shares with download limits</li>
+            <li>Full audit logging — know who accessed what, and when</li>
+            <li>Files stored outside the public web root; no direct access</li>
+        </ul>
+
+        <div class="status">
+            <strong>Status:</strong> Active development — Phase 1 (MVP) in progress.
+        </div>
+
+        <div class="links">
+            <a href="https://github.com/fiquemyv/sharesecurely" target="_blank" rel="noopener">GitHub</a>
+            <a href="/contributors">Contributors</a>
+            <a href="/contact">Contact</a>
+        </div>
+{% endblock %}
