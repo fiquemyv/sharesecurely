@@ -82,6 +82,8 @@ Planned but not implemented yet:
 - Use Jinja2 for server-rendered pages, shared layout, and reusable template partials.
 - Use HTMX when the server should return HTML fragments for progressive interactions.
 - Use Alpine.js for small client-side UI state such as toggles, menus, disclosure controls, and temporary form behavior.
+- Load HTMX, Alpine.js, and Tailwind only when a page or feature actually uses them.
+- Prefer bundled or vendored frontend assets for production instead of broad CDN scripts.
 - Keep reusable CSS and JavaScript under `app/static/`.
 - Keep images, logos, icons, and avatars under `app/static/images/`.
 - Do not place CSS or JavaScript under `app/templates/` unless a future feature truly needs dynamically rendered script/style fragments.
@@ -199,7 +201,7 @@ Configuration is loaded from environment variables via `python-dotenv`.
 | Variable | Purpose |
 |----------|---------|
 | `SECRET_KEY` | Flask session signing and CSRF key |
-| `FLASK_ENV` | Environment name; production requires an explicit `SECRET_KEY` |
+| `FLASK_DEBUG` | Enables Flask debug mode when set to a truthy value |
 | `DATABASE_URL` | Optional complete SQLAlchemy database URI |
 | `DB_USER` | MySQL database username |
 | `DB_PASSWORD` | MySQL database password |
@@ -215,8 +217,9 @@ Database configuration precedence:
 
 Security rule:
 
-- Production deployments must set a strong `SECRET_KEY`.
-- Local development can fall back to a development-only key.
+- All environments must set `SECRET_KEY`.
+- Production deployments must use a strong, private `SECRET_KEY`.
+- Debug mode is disabled by default and must be enabled explicitly with `FLASK_DEBUG`.
 
 ---
 

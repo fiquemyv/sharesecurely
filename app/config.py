@@ -8,12 +8,20 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+def env_flag(name, default=False):
+    value = os.getenv(name)
+    if value is None:
+        return default
+
+    return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY")
     if not SECRET_KEY:
-        if os.getenv("FLASK_ENV") == "production":
-            raise RuntimeError("SECRET_KEY must be set in production.")
-        SECRET_KEY = "dev-only-change-me"
+        raise RuntimeError("SECRET_KEY must be set.")
+
+    DEBUG = env_flag("FLASK_DEBUG")
 
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     if not SQLALCHEMY_DATABASE_URI:
