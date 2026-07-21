@@ -35,7 +35,7 @@
         <p>We may update this privacy policy from time to time. Changes will be posted on this page with an updated effective date.</p>
 
         <h2>10. Contact</h2>
-        <p>For privacy-related inquiries, reach out via the <a href="/contact">contact page</a>.</p>
+        <p>For privacy-related inquiries, reach out via the <a href="{{ url_for('main.contact') }}">contact page</a>.</p>
 
-        <a href="/" class="back-link">&larr; Back home</a>
+        <a href="{{ url_for('main.home') }}" class="back-link">&larr; Back home</a>
 {% endblock %}

@@ -9,7 +9,7 @@
 
         <ul class="contributor-list">
             <li>
-                <img src="{{ url_for('static', filename='shafiq.png') }}" alt="Muyivu Shafiq">
+                <img src="{{ url_for('static', filename='images/shafiq.png') }}" alt="Muyivu Shafiq">
                 <span class="name">Muyivu Shafiq</span>
             </li>
             <li>
@@ -20,5 +20,5 @@
 
         <a href="https://github.com/fiquemyv/sharesecurely" target="_blank" rel="noopener" class="cta">Become a major contributor</a>
 
-        <a href="/" class="back-link">&larr; Back home</a>
+        <a href="{{ url_for('main.home') }}" class="back-link">&larr; Back home</a>
 {% endblock %}

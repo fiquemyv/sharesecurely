@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, redirect, render_template, request, url_for
 
 main = Blueprint("main", __name__)
 
@@ -23,11 +23,17 @@ def privacy():
     return render_template("privacy.html")
 
 
-@main.route("/contact")
+@main.route("/contact", methods=["GET", "POST"])
 def contact():
+    if request.method == "POST":
+        return redirect(url_for("main.contact"), code=303)
+
     return render_template("contact.html")
 
 
-@main.route("/waitlist")
+@main.route("/waitlist", methods=["GET", "POST"])
 def waitlist():
+    if request.method == "POST":
+        return redirect(url_for("main.waitlist"), code=303)
+
     return render_template("waitlist.html")

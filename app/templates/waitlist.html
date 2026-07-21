@@ -7,7 +7,8 @@
         <h1>Join the Waitlist</h1>
         <p>Be the first to know when ShareSecurely launches. Early supporters get priority access.</p>
 
-        <form action="#" method="POST">
+        <form action="{{ url_for('main.waitlist') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="form-group">
                 <label for="name">Full name</label>
                 <input type="text" id="name" name="name" placeholder="Your full name" required>
@@ -103,5 +104,5 @@
 
         <p class="note">No spam. One email when we launch, that's it.</p>
 
-        <a href="/" class="back-link">&larr; Back home</a>
+        <a href="{{ url_for('main.home') }}" class="back-link">&larr; Back home</a>
 {% endblock %}

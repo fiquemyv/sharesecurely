@@ -5,8 +5,8 @@
 
 {% block header %}
         <nav>
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="ShareSecurely" class="navbar-logo">
-            <a href="/waitlist" class="nav-cta">JOIN WAITLIST &rarr;</a>
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="ShareSecurely" class="navbar-logo">
+            <a href="{{ url_for('main.waitlist') }}" class="nav-cta">JOIN WAITLIST &rarr;</a>
         </nav>
 {% endblock %}
 
@@ -30,7 +30,7 @@
 
         <div class="links">
             <a href="https://github.com/fiquemyv/sharesecurely" target="_blank" rel="noopener">GitHub</a>
-            <a href="/contributors">Contributors</a>
-            <a href="/contact">Contact</a>
+            <a href="{{ url_for('main.contributors') }}">Contributors</a>
+            <a href="{{ url_for('main.contact') }}">Contact</a>
         </div>
 {% endblock %}

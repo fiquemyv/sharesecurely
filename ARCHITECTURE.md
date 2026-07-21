@@ -1,38 +1,96 @@
-# ShareSecurely — Architecture Document
+# ShareSecurely Architecture
 
-An open-source secure file-sharing platform designed for sharing sensitive documents with controlled access, expiration policies, and audit tracking.
+ShareSecurely is an open-source secure file-sharing platform for sharing sensitive documents with controlled access, expiration policies, password-protected links, download tracking, and audit trails.
 
----
-
-## 1. Project Overview
-
-**ShareSecurely** is a lightweight alternative to insecure file-sharing methods, providing a secure, auditable, and controlled environment for file transfer. It is built as a cybersecurity portfolio project demonstrating authentication, authorization, cryptography, secure file handling, and web application security.
-
-### Key Capabilities
-
-- Secure file uploads
-- Controlled file access
-- Expiring download links
-- Password-protected sharing
-- Download tracking
-- Access auditing
+This document is the long-term architecture reference for the project. It describes both the current application shell and the target architecture, so planned features are explicitly marked as planned rather than implied as already implemented.
 
 ---
 
-## 2. Technology Stack
+## 1. Objectives
+
+ShareSecurely is intended to be a lightweight alternative to sending confidential files through email attachments, open cloud links, or other hard-to-audit channels.
+
+Primary goals:
+
+- Provide secure file upload, storage, sharing, and download flows.
+- Keep uploaded files outside the public web root.
+- Control access with authentication, authorization, expiring links, password protection, and download limits.
+- Record auditable security events such as uploads, share creation, successful downloads, failed access attempts, and expired-link attempts.
+- Demonstrate practical cybersecurity engineering: authentication, authorization, cryptography, secure file handling, web security, and operational auditability.
+
+Non-goals for the early MVP:
+
+- Real-time collaboration.
+- Public file browsing.
+- Enterprise SSO or organization policy controls.
+- End-to-end encryption between two browser clients.
+
+---
+
+## 2. Current Status
+
+The repository currently contains:
+
+- Flask application factory in `app/__init__.py`.
+- Environment-based configuration in `app/config.py`.
+- Shared Flask extensions in `app/extensions.py`:
+  - SQLAlchemy
+  - Flask-WTF CSRF protection
+  - Flask-Migrate
+- A public-page blueprint in `app/routes.py`.
+- Jinja2 templates for the landing, contributors, contact, waitlist, terms, and privacy pages.
+- Static assets under `app/static/`, with images under `app/static/images/`.
+- Placeholder module directories for planned product features:
+  - `auth`
+  - `audit`
+  - `dashboard`
+  - `files`
+  - `models`
+  - `sharing`
+  - `utils`
+
+The current contact and waitlist forms are presentation placeholders. They accept CSRF-protected `POST` requests and redirect back to their own pages, but they do not persist submissions, send email, or create application records yet.
+
+Planned but not implemented yet:
+
+- User registration, login, logout, and profile management.
+- File upload, download, delete, rename, and ownership management.
+- Secure share-link creation and revocation.
+- Password-protected share links.
+- Download limits and expiration enforcement.
+- Audit-log persistence.
+- Rate limiting.
+- File hashing and validation.
+
+---
+
+## 3. Technology Stack
 
 | Layer | Technology |
-|-------|-----------|
-| **Backend** | Python 3.14, Flask 3.1, Flask-SQLAlchemy, Flask-Login, Flask-WTF, Flask-Bcrypt, Flask-Migrate |
-| **Frontend** | HTMX, Jinja2 Templates, Tailwind CSS |
-| **Database** | MySQL (via PyMySQL), SQLite (alternative dev), PostgreSQL (alternative prod) |
-| **Storage** | Local filesystem, S3-compatible storage (MinIO, Wasabi) |
-| **Migrations** | Alembic / Flask-Migrate |
-| **Security** | bcrypt (password hashing), SHA-256 (file integrity), CSRF protection, rate limiting |
+|-------|------------|
+| Backend | Python 3.14 target, Flask 3.1 |
+| Application extensions | Flask-SQLAlchemy, Flask-Login, Flask-WTF, Flask-Bcrypt, Flask-Migrate |
+| Frontend | Jinja2 templates, HTMX, Alpine.js, Tailwind CSS |
+| Database | MySQL via PyMySQL, SQLite for local development, PostgreSQL as a production alternative |
+| Storage | Local filesystem first, S3-compatible storage later such as MinIO or Wasabi |
+| Migrations | Alembic through Flask-Migrate |
+| Security | CSRF protection, bcrypt password hashing, SHA-256 file integrity, rate limiting |
+| Testing and scanning | pytest, OWASP ZAP, Bandit, Semgrep |
+
+### Frontend Responsibilities
+
+- Use Jinja2 for server-rendered pages, shared layout, and reusable template partials.
+- Use HTMX when the server should return HTML fragments for progressive interactions.
+- Use Alpine.js for small client-side UI state such as toggles, menus, disclosure controls, and temporary form behavior.
+- Keep reusable CSS and JavaScript under `app/static/`.
+- Keep images, logos, icons, and avatars under `app/static/images/`.
+- Do not place CSS or JavaScript under `app/templates/` unless a future feature truly needs dynamically rendered script/style fragments.
 
 ### Python Dependencies
 
-```
+Core dependencies are pinned in `requirements.txt`. Important direct dependencies include:
+
+```text
 Flask==3.1.3
 Flask-SQLAlchemy==3.1.1
 Flask-Login==0.6.3
@@ -48,247 +106,402 @@ alembic==1.18.5
 
 ---
 
-## 3. Project Structure
+## 4. Project Structure
 
-```
+```text
 sharesecurely/
-├── run.py                     # Application entry point
-├── requirements.txt           # Python dependencies
-├── ARCHITECTURE.md            # This document
-├── .env                       # Environment variables (ignored by git)
-├── .env.example               # Environment variable template
-├── .gitignore                 # Git ignore rules
-├── app/
-│   ├── __init__.py            # App factory (create_app)
-│   ├── config.py              # Configuration class (env-based)
-│   ├── extensions.py          # Flask extensions (SQLAlchemy)
-│   ├── routes.py              # Main blueprint & home route
-│   ├── auth/                  # Authentication module
-│   ├── audit/                 # Audit logging module
-│   ├── dashboard/             # User dashboard module
-│   ├── files/                 # File management module
-│   ├── models/                # Database models
-│   ├── sharing/               # Secure sharing module
-│   ├── static/                # Static assets (CSS, JS)
-│   ├── templates/             # Jinja2 templates
-│   │   ├── css/               # Template-specific CSS
-│   │   └── js/                # Template-specific JS
-│   └── utils/                 # Utility functions
-├── instance/                  # Flask instance folder (ignored by git)
-├── migrations/                # Alembic database migrations
-├── uploads/                   # Uploaded files storage (ignored by git)
-└── venv/                      # Python virtual environment (ignored by git)
+|-- run.py                     # Application entry point
+|-- requirements.txt           # Python dependencies
+|-- README.md                  # Public project summary
+|-- ARCHITECTURE.md            # Architecture and implementation reference
+|-- .env                       # Local environment variables, ignored by git
+|-- .env.example               # Environment variable template
+|-- .gitignore                 # Git ignore rules
+|-- app/
+|   |-- __init__.py            # App factory, create_app()
+|   |-- config.py              # Environment-based configuration
+|   |-- extensions.py          # Shared extension instances
+|   |-- routes.py              # Current public-page blueprint
+|   |-- auth/                  # Planned authentication module
+|   |-- audit/                 # Planned audit logging module
+|   |-- dashboard/             # Planned authenticated dashboard module
+|   |-- files/                 # Planned file management module
+|   |-- models/                # Planned database models
+|   |-- sharing/               # Planned secure sharing module
+|   |-- static/
+|   |   |-- css/               # Stylesheets
+|   |   |-- js/                # Browser JavaScript
+|   |   `-- images/            # Images, logos, icons, avatars
+|   |-- templates/             # Jinja2 templates
+|   `-- utils/                 # Planned shared utility functions
+|-- instance/                  # Flask instance folder, ignored by git
+|-- migrations/                # Alembic migration files
+|-- uploads/                   # Local uploaded file storage, ignored by git
+`-- venv/                      # Local virtual environment, ignored by git
 ```
 
 ---
 
-## 4. Application Architecture
+## 5. Application Flow
 
-### Request Flow
-
+```text
+Browser
+  |
+  |-- normal page requests
+  |-- HTMX partial requests
+  |-- Alpine.js local UI behavior
+  v
+Flask application
+  |
+  |-- app factory: create_app()
+  |-- configuration: Config
+  |-- extensions: SQLAlchemy, CSRF, Flask-Migrate
+  |-- blueprints: main now, feature modules later
+  |
+  |-- database: SQLite, MySQL, or PostgreSQL
+  |-- file storage: local filesystem or S3-compatible backend
+  `-- audit logs
 ```
-Browser (HTMX Requests)
-        │
-        ▼
-┌──────────────────┐
-│  Flask Application│
-│  (App Factory)    │
-└──────┬───────────┘
-       │
-       ├──────────────► Database (MySQL/SQLite/PostgreSQL)
-       ├──────────────► File Storage (Local / S3 / MinIO / Wasabi)
-       └──────────────► Audit Logs
-```
 
-### App Factory Pattern
+### App Factory
 
-The application uses Flask's **app factory** pattern (`create_app()` in `app/__init__.py`):
+`run.py` imports and calls `create_app()` from `app/__init__.py`.
 
-1. `run.py` calls `create_app()`
-2. Configuration is loaded from `Config` class (environment variables via `.env`)
-3. Extensions (SQLAlchemy) are initialized
-4. Blueprints are registered (currently `main` blueprint from `routes.py`)
+The factory is responsible for:
 
-### Configuration
+- Creating the Flask application.
+- Loading `Config`.
+- Initializing extensions.
+- Registering blueprints.
 
-All configuration is environment-driven via `python-dotenv`:
+Future feature modules should expose blueprints and register them in the app factory. They should not create their own Flask app instances.
+
+### Blueprint Boundaries
+
+Current:
+
+- `main`: public marketing and informational pages.
+
+Planned:
+
+- `auth`: registration, login, logout, password/security settings.
+- `dashboard`: authenticated user landing area.
+- `files`: upload, list, rename, delete, and download owned files.
+- `sharing`: share-link creation, public share access, password checks, expiration checks, and revocation.
+- `audit`: audit-log recording and viewing.
+
+---
+
+## 6. Configuration
+
+Configuration is loaded from environment variables via `python-dotenv`.
 
 | Variable | Purpose |
 |----------|---------|
-| `SECRET_KEY` | Flask session signing key |
-| `DB_USER` | Database username |
-| `DB_PASSWORD` | Database password |
-| `DB_HOST` | Database host |
-| `DB_PORT` | Database port |
-| `DB_NAME` | Database name |
+| `SECRET_KEY` | Flask session signing and CSRF key |
+| `FLASK_ENV` | Environment name; production requires an explicit `SECRET_KEY` |
+| `DATABASE_URL` | Optional complete SQLAlchemy database URI |
+| `DB_USER` | MySQL database username |
+| `DB_PASSWORD` | MySQL database password |
+| `DB_HOST` | MySQL database host |
+| `DB_PORT` | MySQL database port |
+| `DB_NAME` | MySQL database name |
+
+Database configuration precedence:
+
+1. Use `DATABASE_URL` when present.
+2. Otherwise build a MySQL URI from `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT`, and `DB_NAME`.
+3. Otherwise fall back to SQLite at `instance/sharesecurely.db`.
+
+Security rule:
+
+- Production deployments must set a strong `SECRET_KEY`.
+- Local development can fall back to a development-only key.
 
 ---
 
-## 5. Core Features
+## 7. Domain Model
 
-### 5.1 User Management
+The exact SQLAlchemy model definitions are planned, but the core entities should follow these boundaries.
 
-- **Features:** Registration, login/logout, profile management, account security settings
-- **Security:** bcrypt password hashing, session protection, CSRF protection, rate limiting
+### User
 
-### 5.2 File Management
+Represents an authenticated account.
 
-- **User Actions:** Upload, view owned files, delete, rename, manage sharing permissions
-- **File Storage:** Files stored outside the public directory; file type validation and size restrictions enforced
+Expected fields:
 
-#### File Table Schema
+| Field | Purpose |
+|-------|---------|
+| `id` | Unique identifier |
+| `email` | Login identity, unique |
+| `password_hash` | bcrypt password hash |
+| `display_name` | Human-readable user name |
+| `created_at` | Account creation timestamp |
+| `updated_at` | Last profile/security update timestamp |
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | Integer (PK) | Unique identifier |
-| `owner_id` | Integer (FK) | Reference to the user who uploaded the file |
-| `filename` | String | Original or sanitized name of the file |
-| `storage_path` | String | Path where the file is securely stored |
-| `file_size` | Integer | Size of the file in bytes |
-| `file_hash` | String | SHA-256 hash for integrity checking |
-| `uploaded_at` | DateTime | Timestamp of upload |
+### File
 
-### 5.3 Secure Sharing
+Represents metadata for an uploaded file. The file bytes are stored outside the public web directory.
 
-- **Functionality:** Users create token-based sharing links (e.g., `https://sharesecurely.com/share/a82f91bc`)
-- **Options:** Expiration dates, maximum download limits, password protection, manual link revocation
+Expected fields:
 
-#### ShareLink Table Schema
+| Field | Purpose |
+|-------|---------|
+| `id` | Unique identifier |
+| `owner_id` | User who uploaded the file |
+| `filename` | Original or sanitized display name |
+| `storage_path` | Internal storage location |
+| `file_size` | Size in bytes |
+| `file_hash` | SHA-256 hash for integrity checking |
+| `content_type` | Validated MIME/content type |
+| `uploaded_at` | Upload timestamp |
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | Integer (PK) | Unique identifier |
-| `file_id` | Integer (FK) | Reference to the shared file |
-| `token` | String | Secure random token for the URL |
-| `password_hash` | String | Hashed password (if protected) |
-| `expires_at` | DateTime | Date/time the link becomes invalid |
-| `download_limit` | Integer | Maximum allowed downloads |
-| `download_count` | Integer | Current number of times downloaded |
-| `created_at` | DateTime | Timestamp of link creation |
+### ShareLink
 
-### 5.4 Audit Logging
+Represents a tokenized access path for a file.
 
-- **Tracked Events:** File uploads, share link creation, shared file access, failed download attempts, expired link access attempts
+Expected fields:
 
-#### AuditLog Table Schema
+| Field | Purpose |
+|-------|---------|
+| `id` | Unique identifier |
+| `file_id` | Shared file |
+| `token` | Secure random URL token |
+| `password_hash` | Optional bcrypt hash for protected links |
+| `expires_at` | Date/time the link becomes invalid |
+| `download_limit` | Maximum allowed downloads |
+| `download_count` | Number of successful downloads |
+| `revoked_at` | Timestamp for manual revocation |
+| `created_at` | Creation timestamp |
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | Integer (PK) | Unique identifier |
-| `user_id` | Integer (FK) | User associated with the action (if applicable) |
-| `action` | String | Description of the event |
-| `ip_address` | String | Origin IP of the request |
-| `timestamp` | DateTime | Time of the event |
-| `metadata` | JSON/Text | Additional context/data |
+### AuditLog
+
+Represents security-relevant activity.
+
+Expected fields:
+
+| Field | Purpose |
+|-------|---------|
+| `id` | Unique identifier |
+| `user_id` | Related user, when available |
+| `action` | Event name, such as `file.uploaded` or `share.download_failed` |
+| `ip_address` | Origin IP address |
+| `user_agent` | Request user agent, when useful |
+| `timestamp` | Event timestamp |
+| `metadata` | JSON/Text details for the event |
 
 ---
 
-## 6. Security Design
+## 8. Core Feature Design
+
+### User Management
+
+Status: planned.
+
+Responsibilities:
+
+- Register users.
+- Authenticate users.
+- Log users out.
+- Manage profile and account security settings.
+- Protect authenticated pages with Flask-Login.
+- Hash passwords with bcrypt.
+- Apply rate limiting to authentication endpoints.
+
+### File Management
+
+Status: planned.
+
+Responsibilities:
+
+- Validate file size and type before storage.
+- Sanitize file names before persistence.
+- Store files outside the public web root.
+- Store metadata in the database.
+- Compute and persist SHA-256 hashes.
+- Let users view, rename, delete, and download their own files.
+- Ensure users cannot access files they do not own.
+
+### Secure Sharing
+
+Status: planned.
+
+Responsibilities:
+
+- Create unguessable token-based share links.
+- Enforce expiration dates.
+- Enforce maximum download counts.
+- Support optional password protection.
+- Support manual revocation.
+- Log successful and failed access attempts.
+
+Example public share shape:
+
+```text
+https://sharesecurely.com/share/a82f91bc
+```
+
+### Audit Logging
+
+Status: planned.
+
+Responsibilities:
+
+- Record file uploads.
+- Record share-link creation and revocation.
+- Record successful shared-file access.
+- Record failed password attempts.
+- Record expired, revoked, or over-limit link attempts.
+- Preserve enough metadata to support security review without storing unnecessary sensitive data.
+
+---
+
+## 9. Security Design
 
 ### File Security
-- File type validation (allowlist approach)
-- File size restrictions
-- Secure filename sanitization
-- Storage strictly outside the public web directory
-- Future: malware scanning support
+
+- Use an allowlist for accepted file types.
+- Enforce maximum file sizes.
+- Sanitize original filenames.
+- Store file bytes outside `app/static/` and outside all public routes.
+- Never serve uploaded files by direct static path.
+- Use controlled Flask routes for downloads.
+- Consider malware scanning as a later advanced feature.
 
 ### Cryptography
-- **Data Integrity:** SHA-256 file hashing to detect tampering
-- **Access Control:** Secure random tokens (Python `secrets` module) for share links
-- **Authentication:** Password hashing via Werkzeug/bcrypt
+
+- Use bcrypt for user passwords and share-link passwords.
+- Use Python's `secrets` module for share tokens.
+- Use SHA-256 for file integrity hashes.
+- Do not use SHA-256 as a password hashing mechanism.
 
 ### Web Security
-- CSRF protection (Flask-WTF)
-- Session security (Flask-Login)
-- Rate limiting on authentication endpoints
-- Input validation and sanitization
+
+- Keep CSRF protection enabled for state-changing forms.
+- Use Flask-Login for session management once authentication is implemented.
+- Add rate limiting before exposing authentication or public share-password endpoints.
+- Validate and sanitize all user input.
+- Avoid leaking whether a token exists when handling public share failures.
+- Return generic errors for unauthorized share access while logging specific server-side reasons.
+
+### Storage Security
+
+- Local storage should use a non-public `uploads/` directory.
+- S3-compatible storage should use private buckets by default.
+- Download responses should be generated only after authorization and share-policy checks.
+- Storage paths should be internal identifiers, not user-controlled paths.
 
 ---
 
-## 7. Development Roadmap
+## 10. Testing Strategy
 
-### Phase 1: MVP *(2–3 weeks)*
-- [ ] User authentication (register, login, logout)
-- [ ] User dashboard
-- [ ] File uploads & downloads
-- [ ] Basic permissions
+### Unit Tests
 
-### Phase 2: Security Features *(2–3 weeks)*
-- [ ] Expiring share links
-- [ ] Password-protected shares
-- [ ] Audit logging
-- [ ] File hashing (SHA-256)
-- [ ] Rate limiting
+Use pytest for:
 
-### Phase 3: Advanced Features *(3–4 weeks)*
-- [ ] Malware scanning
-- [ ] Email notifications
-- [ ] File encryption at rest
-- [ ] API access
-- [ ] Admin dashboard
+- Authentication behavior.
+- Permission checks.
+- File validation.
+- Token generation and expiration logic.
+- Download-limit enforcement.
+- Audit-log event creation.
 
----
+### Integration Tests
 
-## 8. Testing Plan
+Use Flask's test client for:
 
-| Type | Tools | Focus Areas |
-|------|-------|-------------|
-| **Unit Tests** | pytest | Authentication, permissions, file validation, token generation |
-| **Security Scanning** | OWASP ZAP | XSS, CSRF, SQL injection, broken access control |
-| **SAST** | Bandit, Semgrep | Python security vulnerabilities in source code |
+- Public routes.
+- CSRF behavior.
+- Login/logout flows.
+- Upload/download flows.
+- Share-link access flows.
 
----
+### Security Testing
 
-## 9. Open Source Roadmap
+Use:
 
-### Version 1.0 Release
-- Comprehensive documentation
-- Installation guide
-- Docker support
-- Contribution guide
+- OWASP ZAP for dynamic testing.
+- Bandit for Python security linting.
+- Semgrep for static analysis.
 
-### Future Additions
-- Organization accounts & team sharing
-- Enterprise policies
-- SSO integration (OAuth/OIDC)
+Focus areas:
+
+- XSS.
+- CSRF.
+- SQL injection.
+- Broken access control.
+- Unsafe file handling.
+- Token leakage.
 
 ---
 
-## 10. Running the Application
+## 11. Roadmap
+
+### Phase 1: MVP, 2-3 weeks
+
+- [ ] User registration, login, and logout.
+- [ ] Authenticated dashboard.
+- [ ] File upload and download.
+- [ ] Basic ownership permissions.
+
+### Phase 2: Security Features, 2-3 weeks
+
+- [ ] Expiring share links.
+- [ ] Password-protected share links.
+- [ ] Manual share revocation.
+- [ ] Audit logging.
+- [ ] File hashing with SHA-256.
+- [ ] Rate limiting.
+
+### Phase 3: Advanced Features, 3-4 weeks
+
+- [ ] Malware scanning.
+- [ ] Email notifications.
+- [ ] File encryption at rest.
+- [ ] API access.
+- [ ] Admin dashboard.
+
+### Future Open-Source Milestones
+
+- Comprehensive documentation.
+- Installation guide.
+- Docker support.
+- Contribution guide.
+- Organization accounts and team sharing.
+- Enterprise policies.
+- SSO integration with OAuth/OIDC.
+
+---
+
+## 12. Running the Application
 
 ### Prerequisites
-- Python 3.10+
-- MySQL database (or SQLite for development)
-- Virtual environment (recommended)
+
+- Python 3.10+ for local development.
+- MySQL or SQLite.
+- Virtual environment.
 
 ### Setup
 
 ```bash
-# Clone the repository
 git clone <repo-url>
 cd sharesecurely
 
-# Create and activate virtual environment
 python -m venv venv
 venv\Scripts\activate  # Windows
 # source venv/bin/activate  # Linux/macOS
 
-# Install dependencies
 pip install -r requirements.txt
 
-# Configure environment
 cp .env.example .env
-# Edit .env with your database credentials and secret key
+# Edit .env with a secret key and database settings.
 
-# Run database migrations
 flask db upgrade
-
-# Start the application
 python run.py
 ```
 
 ---
 
-## 11. Portfolio Summary
+## 13. Portfolio Summary
 
-> *"Developed an open-source secure file-sharing platform using Flask and HTMX with controlled access, cryptographic integrity verification, and audit logging."*
+> "Developed an open-source secure file-sharing platform using Flask, HTMX, and Alpine.js with controlled access, cryptographic integrity verification, and audit logging."

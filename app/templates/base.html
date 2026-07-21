@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}ShareSecurely{% endblock %}</title>
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='icon.png') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -19,8 +19,8 @@
     <main class="{% block pageClass %}{% endblock %}">
         {% block header %}
         <nav>
-            <a href="/"><img src="{{ url_for('static', filename='logo.png') }}" alt="ShareSecurely" class="navbar-logo"></a>
-            <a href="/waitlist" class="nav-cta">JOIN WAITLIST &rarr;</a>
+            <a href="{{ url_for('main.home') }}"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="ShareSecurely" class="navbar-logo"></a>
+            <a href="{{ url_for('main.waitlist') }}" class="nav-cta">JOIN WAITLIST &rarr;</a>
         </nav>
         {% endblock %}
 
@@ -29,9 +29,9 @@
         <footer>
             <span>&copy; 2026 ShareSecurely</span>
             <span>
-                <a href="/terms">Terms of Service</a>
+                <a href="{{ url_for('main.terms') }}">Terms of Service</a>
                 &nbsp;&middot;&nbsp;
-                <a href="/privacy">Privacy Policy</a>
+                <a href="{{ url_for('main.privacy') }}">Privacy Policy</a>
             </span>
         </footer>
     </main>

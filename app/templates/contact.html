@@ -7,7 +7,8 @@
         <h1>Contact</h1>
         <p>Have a question or want to get involved? Send a message.</p>
 
-        <form action="#" method="POST">
+        <form action="{{ url_for('main.contact') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="form-group">
                 <label for="name">Name</label>
                 <input type="text" id="name" name="name" placeholder="Your name" required>
@@ -19,7 +20,7 @@
             </div>
 
             <div class="form-group">
-                <label for="message" style="padding-top: 0.6rem;">Message</label>
+                <label for="message" class="textarea-label">Message</label>
                 <textarea id="message" name="message" placeholder="What would you like to say?" required></textarea>
             </div>
 
@@ -28,5 +29,5 @@
             </div>
         </form>
 
-        <a href="/" class="back-link">&larr; Back home</a>
+        <a href="{{ url_for('main.home') }}" class="back-link">&larr; Back home</a>
 {% endblock %}

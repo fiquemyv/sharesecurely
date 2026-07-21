@@ -6,7 +6,7 @@ A web application designed for the safe transmission, storage, and management of
 
 ## **Tech Stack**
 
-* Flask, MySQL, Alpine.js, Tailwind CSS
+* Flask, MySQL/SQLite, Jinja2, HTMX, Alpine.js, Tailwind CSS
 
 ## **Quick Start**
 
